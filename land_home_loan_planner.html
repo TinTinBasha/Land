@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Land & Home Loan Planner</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#667085;--line:#d9e1ea;--blue:#2563eb;--green:#067647;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px Segoe UI,Arial,sans-serif}.wrap{max-width:1300px;margin:0 auto;padding:28px 18px 60px}
+h1{margin:0 0 6px;font-size:30px}h2{margin:0 0 6px;font-size:21px}.sub,.note{color:var(--muted);line-height:1.5}.section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin:18px 0;box-shadow:0 6px 20px #1018280b}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+label{display:block;font-weight:650;font-size:13px;margin-bottom:6px}input,select{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;font-size:14px}
+.summary{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:18px}.metric{background:#f8fafc;border:1px solid var(--line);border-radius:11px;padding:13px}.metric .l{font-size:12px;color:var(--muted)}.metric .v{font-size:19px;font-weight:750;margin-top:4px}.good{color:var(--green)!important;background:#ecfdf3!important;border-color:#a6f4c5!important}.bad{color:var(--red)!important;background:#fef3f2!important;border-color:#fecdca!important}
+.status{margin-top:14px;padding:12px;border-radius:10px;font-weight:650}.status.good{color:var(--green);background:#ecfdf3;border:1px solid #a6f4c5}.status.bad{color:var(--red);background:#fef3f2;border:1px solid #fecdca}
+.toolbar{display:flex;gap:8px;margin:15px 0;flex-wrap:wrap}button{border:0;border-radius:8px;padding:10px 14px;font-weight:700;background:var(--blue);color:#fff;cursor:pointer}button.secondary{background:#eef2f6;color:#344054}button.danger{background:#fee4e2;color:var(--red);padding:7px 10px}
+.table{overflow:auto;border:1px solid var(--line);border-radius:11px}table{border-collapse:collapse;width:100%;min-width:1000px}th,td{padding:9px;border-bottom:1px solid #edf0f4;text-align:right;font-size:12px;white-space:nowrap}th{background:#f8fafc;color:#475467;position:sticky;top:0}th:first-child,td:first-child{text-align:left}.total td{font-weight:800;background:#f8fafc}
+.people{display:grid;grid-template-columns:1fr 1fr;gap:18px}.person{border:1px solid var(--line);border-radius:13px;padding:17px}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.head h3{margin:0}.row{display:grid;grid-template-columns:1fr 105px 145px 40px;gap:8px;margin:8px 0}
+html{-webkit-text-size-adjust:100%;overflow-y:scroll}.wrap>*{min-width:0}.person,.grid>div,.grid2>div,.grid3>div{min-width:0}
+.nav{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}.nav a{flex:1 1 240px;text-align:center;padding:13px 16px;border-radius:10px;font-weight:700;text-decoration:none;background:#eef2f6;color:#344054;border:1px solid var(--line)}.nav a.active{background:var(--blue);color:#fff;border-color:var(--blue)}.nav a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #93c5fd;outline-offset:1px}
+@media(max-width:1000px){.grid,.summary{grid-template-columns:repeat(2,1fr)}.people{grid-template-columns:1fr}.wrap{padding:20px 14px 48px}}
+@media(max-width:600px){.grid,.grid2,.grid3,.summary{grid-template-columns:1fr}.section{padding:16px;border-radius:12px}h1{font-size:23px}h2{font-size:18px}input,select{font-size:16px;min-height:44px}button{min-height:44px}.toolbar button{flex:1 1 140px}.metric .v{font-size:17px}.row{grid-template-columns:1fr 1fr 44px}.row input:first-child{grid-column:1/-1}.person .summary{grid-template-columns:1fr!important}}
+@media print{.nav,.toolbar{display:none}body{background:#fff}.section{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="nav" aria-label="Pages">
+<a class="active" href="land_home_loan_planner.html" aria-current="page">1. Land Purchase &amp; Home Loan Planner</a>
+<a href="home_building_expenses.html">2. Home Building Expenses</a>
+</nav>
+<h1>Land Purchase & Home Loan Planner</h1>
+<div class="sub">Standalone calculator for land cost, registration, funding, loan amortization, annual lump-sum prepayments, and two-borrower finances.</div>
+
+<section class="section">
+<h2>Section 1 — Land Purchase & Registration</h2>
+<div class="note">Registration charges are calculated automatically from the registered land value. The direct-to-owner amount is kept separate.</div>
+<div class="grid">
+<div><label>Land amount to be registered (₹)</label><input id="registered" type="number" value="4000000"></div>
+<div><label>Additional amount paid directly to owner (₹)</label><input id="direct" type="number" value="7300000"></div>
+<div><label>Broker amount (₹)</label><input id="broker" type="number" value="0"></div>
+<div><label>Other land-related cost (₹)</label><input id="otherLand" type="number" value="0"></div>
+</div>
+<div class="grid3">
+<div><label>Stamp duty (%)</label><input id="stamp" type="number" step=".01" value="7"></div>
+<div><label>Registration fee (%)</label><input id="regfee" type="number" step=".01" value="4"></div>
+<div><label>Other registration / approval cost (₹)</label><input id="otherReg" type="number" value="0"></div>
+</div>
+<div class="summary">
+<div class="metric"><div class="l">Registered value</div><div class="v" id="sReg">₹0</div></div>
+<div class="metric"><div class="l">Stamp duty</div><div class="v" id="sStamp">₹0</div></div>
+<div class="metric"><div class="l">Registration fee</div><div class="v" id="sFee">₹0</div></div>
+<div class="metric"><div class="l">Actual land price</div><div class="v" id="sLand">₹0</div></div>
+<div class="metric"><div class="l">Total amount required</div><div class="v" id="sTotal">₹0</div></div>
+</div>
+</section>
+
+<section class="section">
+<h2>Section 2 — Funding</h2>
+<div class="note">Loan + in-hand money must cover Section 1. A shortfall is highlighted in red.</div>
+<div class="grid2">
+<div><label>Loan amount (₹)</label><input id="loanFund" type="number" value="6300000"></div>
+<div><label>In-hand money / savings (₹)</label><input id="cash" type="number" value="10100000"></div>
+</div>
+<div class="summary">
+<div class="metric"><div class="l">Loan + in-hand</div><div class="v" id="sFunds">₹0</div></div>
+<div class="metric"><div class="l">Required</div><div class="v" id="sReq">₹0</div></div>
+<div class="metric"><div class="l">Surplus / shortfall</div><div class="v" id="sGap">₹0</div></div>
+<div class="metric"><div class="l">Status</div><div class="v" id="sStatus">—</div></div>
+<div class="metric"><div class="l">In-hand remaining</div><div class="v" id="sRemain">₹0</div></div>
+</div>
+<div id="fundStatus" class="status good">—</div>
+</section>
+
+<section class="section">
+<h2>Section 3 — Loan Amortization & Lump Sum</h2>
+<div class="grid">
+<div><label>Loan amount (₹)</label><input id="loan" type="number" value="6300000"></div>
+<div><label>Interest rate (% p.a.)</label><input id="rate" type="number" step=".01" value="7.5"></div>
+<div><label>Loan tenure (years)</label><input id="years" type="number" value="10"></div>
+<div><label>Loan start month</label><input id="start" type="month" value="2026-12"></div>
+<div><label>Initial yearly lump sum (₹)</label><input id="lump" type="number" value="300000"></div>
+<div><label>Yearly lump-sum increase (%)</label><input id="increase" type="number" step=".1" min="0" max="100" value="0"></div>
+<div><label>Lump-sum timing</label><select id="timing"><option value="anniversary">After every 12th EMI</option><option value="calendar">After December EMI</option></select></div>
+</div>
+<div class="summary">
+<div class="metric"><div class="l">Calculated EMI</div><div class="v" id="emi">₹0</div></div>
+<div class="metric"><div class="l">Interest paid</div><div class="v" id="interest">₹0</div></div>
+<div class="metric"><div class="l">Total lump sums</div><div class="v" id="lumpTotal">₹0</div></div>
+<div class="metric"><div class="l">Actual payoff</div><div class="v" id="payoff">—</div></div>
+<div class="metric"><div class="l">Months to payoff</div><div class="v" id="months">—</div></div>
+</div>
+<div class="toolbar"><button onclick="calculate()">Recalculate</button><button class="secondary" onclick="csv()">Export CSV</button></div>
+<div class="table"><table id="amort"><thead><tr>
+<th>Month</th><th>Opening Principal</th><th>EMI</th><th>Interest</th><th>Principal via EMI</th><th>Lump Sum</th><th>Total Principal Paid</th><th>Closing Principal</th>
+</tr></thead><tbody></tbody></table></div>
+<div class="note" style="margin-top:10px">Assumes the rate stays constant for the simulation. In a real floating-rate loan, the schedule changes when the bank resets the rate. Lump sums are applied directly against principal.</div>
+</section>
+
+<section class="section">
+<h2>Section 4 — Me & Brother Monthly Cash Flow</h2>
+<div class="note">Enter monthly salary/income and add any number of Savings or Spend items. Every item is deducted from salary. If money is still left after all savings and spending, that remaining amount is automatically added to savings and shown in green.</div>
+
+<div class="people">
+<div class="person">
+  <div class="head"><h3>Borrower 1 — Me</h3><button onclick="addRow('me')">+ Add field</button></div>
+  <div id="meRows"></div>
+  <div style="margin-top:12px"><label>Monthly EMI split (₹)</label><input id="meEmiInput" type="number" min="0" step="1000" value="44850" oninput="refreshCashFlow()"></div>
+  <div class="summary" style="grid-template-columns:repeat(2,1fr);margin-top:14px">
+    <div class="metric"><div class="l">Monthly salary / income</div><div class="v" id="meIncome">₹0</div></div>
+    <div class="metric"><div class="l">Total savings entered</div><div class="v" id="meSavings">₹0</div></div>
+    <div class="metric"><div class="l">Total spending</div><div class="v" id="meSpend">₹0</div></div>
+    <div class="metric"><div class="l">Monthly EMI split</div><div class="v" id="meEmiSplit">₹0</div></div>
+    <div class="metric good"><div class="l">Remaining → added to savings</div><div class="v" id="meRemaining">₹0</div></div>
+  </div>
+</div>
+
+<div class="person">
+  <div class="head"><h3>Borrower 2 — Brother</h3><button onclick="addRow('brother')">+ Add field</button></div>
+  <div id="brotherRows"></div>
+  <div style="margin-top:12px"><label>Monthly EMI split (₹)</label><input id="brotherEmiInput" type="number" min="0" step="1000" value="29900" oninput="refreshCashFlow()"></div>
+  <div class="summary" style="grid-template-columns:repeat(2,1fr);margin-top:14px">
+    <div class="metric"><div class="l">Monthly salary / income</div><div class="v" id="brotherIncome">₹0</div></div>
+    <div class="metric"><div class="l">Total savings entered</div><div class="v" id="brotherSavings">₹0</div></div>
+    <div class="metric"><div class="l">Total spending</div><div class="v" id="brotherSpend">₹0</div></div>
+    <div class="metric"><div class="l">Monthly EMI split</div><div class="v" id="brotherEmiSplit">₹0</div></div>
+    <div class="metric good"><div class="l">Remaining → added to savings</div><div class="v" id="brotherRemaining">₹0</div></div>
+  </div>
+</div>
+</div>
+
+<div class="toolbar"><button class="secondary" onclick="splitEmi()">Auto-split EMI by income</button><button class="secondary" onclick="window.print()">Print</button><button class="danger" onclick="resetAll()">Reset all</button></div>
+<div style="margin-top:20px">
+<h3>Combined Monthly Cash Flow</h3>
+<div class="summary">
+  <div class="metric"><div class="l">Combined salary / income</div><div class="v" id="combinedIncome">₹0</div></div>
+  <div class="metric"><div class="l">Combined savings entered</div><div class="v" id="combinedSavings">₹0</div></div>
+  <div class="metric"><div class="l">Combined spending</div><div class="v" id="combinedSpend">₹0</div></div>
+  <div class="metric good"><div class="l">Combined remaining → savings</div><div class="v" id="combinedRemaining">₹0</div></div>
+  <div class="metric good"><div class="l">Total monthly savings</div><div class="v" id="totalMonthlySavings">₹0</div></div>
+  <div class="metric"><div class="l">My end-of-month balance</div><div class="v" id="finalMe">₹0</div></div>
+  <div class="metric"><div class="l">Brother end-of-month balance</div><div class="v" id="finalBrother">₹0</div></div>
+  <div class="metric good"><div class="l">Combined end-of-month balance</div><div class="v" id="finalCombined">₹0</div></div>
+</div>
+</div>
+
+<div style="margin-top:18px">
+<h3>Loan Impact</h3>
+<div class="summary">
+  <div class="metric"><div class="l">Combined salary</div><div class="v" id="cfSalary">₹0</div></div>
+  <div class="metric"><div class="l">Home-loan EMI</div><div class="v" id="cfEmi">₹0</div></div>
+  <div class="metric"><div class="l">Savings after EMI</div><div class="v" id="cfAfterEmi">₹0</div></div>
+  <div class="metric"><div class="l">Annual lump sum planned</div><div class="v" id="cfLump">₹0</div></div>
+  <div class="metric"><div class="l">Annual savings after lump sums</div><div class="v" id="cfAnnualAfter">₹0</div></div>
+</div>
+</div>
+</section>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const n=id=>Number($(id).value)||0;
+const money=x=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Math.round(x||0));
+
+function totalRequired(){
+ const r=n('registered'), d=n('direct'), b=n('broker'), o=n('otherLand');
+ const sd=r*n('stamp')/100, rf=r*n('regfee')/100, or=n('otherReg');
+ $('sReg').textContent=money(r);$('sStamp').textContent=money(sd);$('sFee').textContent=money(rf);
+ $('sLand').textContent=money(r+d);
+ const t=r+d+b+o+sd+rf+or;$('sTotal').textContent=money(t);return t;
+}
+function funding(){
+ const t=totalRequired(), funds=n('loanFund')+n('cash'), gap=funds-t;
+ $('sFunds').textContent=money(funds);$('sReq').textContent=money(t);$('sGap').textContent=money(gap);
+ $('sStatus').textContent=gap>=0?'Covered':'Shortfall';$('sStatus').className='v '+(gap>=0?'good':'bad');
+ $('sGap').className='v '+(gap>=0?'good':'bad');$('sRemain').textContent=money(Math.max(0,n('cash')-Math.max(0,t-n('loanFund'))));
+ const st=$('fundStatus');st.className='status '+(gap>=0?'good':'bad');
+ st.textContent=gap>=0?`Funding covered — surplus ${money(gap)}.`:`Funding shortfall — additional ${money(-gap)} required.`;
+}
+
+function calculate(){
+ const P=n('loan'), annual=n('rate'), N=Math.max(1,Math.floor(n('years')*12)), r=annual/1200;
+ const emi=r===0?P/N:P*r*Math.pow(1+r,N)/(Math.pow(1+r,N)-1);
+ $('emi').textContent=money(emi); $('loanFund').value=P;
+ const [y,m]=($('start').value||'2026-12').split('-').map(Number);
+ let bal=P, rows=[], ti=0, tl=0;
+ const base=n('lump'), inc=n('increase'), timing=$('timing').value;
+ for(let i=1;i<=N && bal>0.005;i++){
+   const dt=new Date(y,m-1+i-1,1), opening=bal, interest=bal*r;
+   const pay=Math.min(emi,bal+interest), principal=Math.max(0,pay-interest);
+   bal=Math.max(0,bal-principal);
+   let ls=0, apply=timing==='anniversary' ? i%12===0 : dt.getMonth()===11;
+   if(apply && bal>0.005){
+     const idx=timing==='anniversary'?Math.floor(i/12)-1:Math.max(0,dt.getFullYear()-y);
+     ls=Math.min(base*Math.pow(1+inc/100,idx),bal);bal-=ls;
+   }
+   ti+=interest;tl+=ls;
+   rows.push({dt,opening,pay,interest,principal,ls,closing:bal});
+ }
+ const tb=$('amort').querySelector('tbody');tb.innerHTML='';
+ rows.forEach(x=>{const tr=document.createElement('tr');tr.innerHTML=
+ `<td>${x.dt.toLocaleDateString('en-IN',{month:'short',year:'numeric'})}</td>
+ <td>${money(x.opening)}</td><td>${money(x.pay)}</td><td>${money(x.interest)}</td>
+ <td>${money(x.principal)}</td><td>${money(x.ls)}</td><td>${money(x.principal+x.ls)}</td><td>${money(x.closing)}</td>`;
+ tb.appendChild(tr)});
+ $('interest').textContent=money(ti);$('lumpTotal').textContent=money(tl);
+ const last=rows[rows.length-1];$('payoff').textContent=last?last.dt.toLocaleDateString('en-IN',{month:'long',year:'numeric'}):'—';
+ $('months').textContent=rows.length; refreshCashFlow(emi);
+ funding();
+ window._rows=rows;
+}
+
+const people={me:[],brother:[]};
+
+function addRow(p,label='',value=0,type='spend'){
+  people[p].push({label,value:Number(value)||0,type});
+  render(p);
+}
+
+function render(p){
+  const box=$(p+'Rows'); box.innerHTML='';
+  people[p].forEach((r,i)=>{
+    const d=document.createElement('div'); d.className='row';
+    d.innerHTML=`<input placeholder="e.g. Rent / SIP / groceries / insurance" value="${escapeAttr(r.label)}">
+      <select><option value="income" ${r.type==='income'?'selected':''}>Income</option>
+      <option value="spend" ${r.type==='spend'?'selected':''}>Spend</option>
+      <option value="savings" ${r.type==='savings'?'selected':''}>Savings</option></select>
+      <input type="number" min="0" step="1000" value="${r.value}">
+      <button class="danger">×</button>`;
+    d.children[0].oninput=e=>{r.label=e.target.value;refreshCashFlow();};
+    d.children[1].onchange=e=>{r.type=e.target.value;refreshCashFlow();};
+    d.children[2].oninput=e=>{r.value=Number(e.target.value)||0;refreshCashFlow();};
+    d.children[0].onchange=e=>{r.label=e.target.value;refreshCashFlow();};
+    d.children[3].onclick=()=>{people[p].splice(i,1);render(p);refreshCashFlow()};
+    box.appendChild(d);
+  });
+  refreshCashFlow();
+}
+
+function escapeAttr(s){
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function income(p){
+  return people[p]
+    .filter(r=>r.type==='income')
+    .reduce((a,r)=>a+r.value,0);
+}
+
+function cashFlow(p){
+  const inc=income(p);
+  const savings=people[p].filter(r=>r.type==='savings').reduce((a,r)=>a+r.value,0);
+  const spend=people[p].filter(r=>r.type==='spend').reduce((a,r)=>a+r.value,0);
+  const remaining=Math.max(0,inc-savings-spend);
+  const over=Math.max(0,savings+spend-inc);
+  return {inc,savings,spend,remaining,over,totalSavings:savings+remaining};
+}
+
+function refreshCashFlow(emiOverride){
+  if(typeof emiOverride!=='number') emiOverride=undefined;
+  const me=cashFlow('me'), bro=cashFlow('brother');
+  const meEmi=Number($('meEmiInput')?.value)||0;
+  const broEmi=Number($('brotherEmiInput')?.value)||0;
+  const emi=emiOverride ?? loanPreview();
+
+  // End-of-month balance = salary - spend - explicit savings - EMI share.
+  // Any positive remainder is the person's additional savings.
+  const meEnd=me.inc-me.savings-me.spend-meEmi;
+  const broEnd=bro.inc-bro.savings-bro.spend-broEmi;
+  const combinedEnd=meEnd+broEnd;
+
+  $('meIncome').textContent=money(me.inc);
+  $('meSavings').textContent=money(me.savings);
+  $('meSpend').textContent=money(me.spend);
+  if($('meEmiSplit')) $('meEmiSplit').textContent=money(meEmi);
+  $('meRemaining').textContent=money(Math.max(0,meEnd));
+  $('meRemaining').className='v '+(meEnd>=0?'good':'bad');
+  if(meEnd<0) $('meRemaining').textContent=`Short by ${money(-meEnd)}`;
+
+  $('brotherIncome').textContent=money(bro.inc);
+  $('brotherSavings').textContent=money(bro.savings);
+  $('brotherSpend').textContent=money(bro.spend);
+  if($('brotherEmiSplit')) $('brotherEmiSplit').textContent=money(broEmi);
+  $('brotherRemaining').textContent=money(Math.max(0,broEnd));
+  $('brotherRemaining').className='v '+(broEnd>=0?'good':'bad');
+  if(broEnd<0) $('brotherRemaining').textContent=`Short by ${money(-broEnd)}`;
+
+  const combinedIncome=me.inc+bro.inc;
+  const combinedSavings=me.savings+bro.savings;
+  const combinedSpend=me.spend+bro.spend;
+  const combinedEmi=meEmi+broEmi;
+
+  $('combinedIncome').textContent=money(combinedIncome);
+  $('combinedSavings').textContent=money(combinedSavings);
+  $('combinedSpend').textContent=money(combinedSpend);
+  $('combinedRemaining').textContent=money(Math.max(0,combinedEnd));
+  $('combinedRemaining').className='v '+(combinedEnd>=0?'good':'bad');
+  if(combinedEnd<0) $('combinedRemaining').textContent=`Short by ${money(-combinedEnd)}`;
+
+  // Total monthly savings includes explicit savings + the remaining cash after EMI.
+  $('totalMonthlySavings').textContent=money(combinedSavings+Math.max(0,combinedEnd));
+
+  $('finalMe').textContent=money(Math.max(0,meEnd));
+  $('finalMe').className='v '+(meEnd>=0?'good':'bad');
+  if(meEnd<0) $('finalMe').textContent=`Short by ${money(-meEnd)}`;
+
+  $('finalBrother').textContent=money(Math.max(0,broEnd));
+  $('finalBrother').className='v '+(broEnd>=0?'good':'bad');
+  if(broEnd<0) $('finalBrother').textContent=`Short by ${money(-broEnd)}`;
+
+  $('finalCombined').textContent=money(Math.max(0,combinedEnd));
+  $('finalCombined').className='v '+(combinedEnd>=0?'good':'bad');
+  if(combinedEnd<0) $('finalCombined').textContent=`Short by ${money(-combinedEnd)}`;
+
+  $('cfSalary').textContent=money(combinedIncome);
+  $('cfEmi').textContent=money(emi);
+  const afterEmi=combinedIncome-combinedSavings-combinedSpend-emi;
+  $('cfAfterEmi').textContent=money(afterEmi);
+  $('cfAfterEmi').className='v '+(afterEmi>=0?'good':'bad');
+  $('cfLump').textContent=money(n('lump'));
+  $('cfAnnualAfter').textContent=money((combinedSavings+Math.max(0,combinedEnd))*12-n('lump'));
+
+  // Warn if the manually entered EMI split does not match the calculated EMI.
+  const splitDiff=combinedEmi-emi;
+  let splitNote=document.getElementById('emiSplitNote');
+  if(!splitNote){
+    splitNote=document.createElement('div');
+    splitNote.id='emiSplitNote';
+    splitNote.className='note';
+    document.querySelector('.section:nth-of-type(4)')?.appendChild(splitNote);
+  }
+  if(typeof save==='function') save();
+  if(Math.abs(splitDiff)>1){
+    splitNote.innerHTML=`⚠️ EMI split is ${money(Math.abs(splitDiff))} ${splitDiff>0?'below':'above'} the calculated EMI of ${money(emi)}.`;
+    splitNote.style.color='#b42318';
+  }else{
+    splitNote.innerHTML=`✓ EMI split matches the calculated loan EMI of ${money(emi)}.`;
+    splitNote.style.color='#067647';
+  }
+}
+function recalcSection4(){
+  refreshCashFlow();
+}
+
+function loanPreview(){const P=n('loan'),N=Math.max(1,Math.floor(n('years')*12)),r=n('rate')/1200;return r===0?P/N:P*r*Math.pow(1+r,N)/(Math.pow(1+r,N)-1)}
+function splitEmi(){
+ const emi=loanPreview(), a=income('me'), b=income('brother'), tot=a+b;
+ const me=tot>0?Math.round(emi*a/tot):Math.round(emi/2);
+ $('meEmiInput').value=me;$('brotherEmiInput').value=Math.round(emi)-me;refreshCashFlow();
+}
+function csv(){
+ const lines=[...$('amort').querySelectorAll('tr')].map(tr=>[...tr.children].map(td=>`"${td.textContent.trim().replaceAll('"','""').replaceAll('₹','')}"`).join(','));
+ const blob=new Blob(['﻿'+lines.join('\n')],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='loan-amortization.csv';a.click();
+}
+const KEY='landLoanPlanner.v1';
+const fieldIds=()=>[...document.querySelectorAll('input[id],select[id]')].map(x=>x.id);
+function save(){
+  try{
+    const d={f:{},people};
+    fieldIds().forEach(id=>d.f[id]=$(id).value);
+    localStorage.setItem(KEY,JSON.stringify(d));
+  }catch(e){}
+}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem(KEY)||'null');
+    if(!d) return false;
+    Object.entries(d.f||{}).forEach(([id,v])=>{if($(id))$(id).value=v});
+    ['me','brother'].forEach(p=>{people[p]=(d.people?.[p]||[]).map(r=>({label:String(r.label||''),value:Number(r.value)||0,type:r.type||'spend'}))});
+    return true;
+  }catch(e){return false}
+}
+function resetAll(){
+  if(!confirm('Reset all inputs to defaults?')) return;
+  try{localStorage.removeItem(KEY)}catch(e){}
+  location.reload();
+}
+// Loan amount is a single value: Section 2 and Section 3 stay in sync.
+document.querySelectorAll('input,select').forEach(x=>{
+  const handler=()=>{
+    if(x.id==='loanFund') $('loan').value=x.value;
+    if(x.id==='loan') $('loanFund').value=x.value;
+    if(['loanFund','loan','cash','registered','direct','broker','otherLand','stamp','regfee','otherReg'].includes(x.id)) funding();
+    if(['loanFund','loan','rate','years','start','lump','increase','timing'].includes(x.id)) calculate();
+    if(['meEmiInput','brotherEmiInput'].includes(x.id)) refreshCashFlow();
+    save();
+  };
+  x.addEventListener('input',handler);
+  x.addEventListener('change',handler);
+});
+if(load()){['me','brother'].forEach(render)}
+else{
+  addRow('me','Monthly income',164000,'income');
+  addRow('me','Monthly spending',0,'spend');
+  addRow('me','Savings contribution',0,'savings');
+  addRow('brother','Monthly income',120000,'income');
+  addRow('brother','Monthly spending',0,'spend');
+  addRow('brother','Savings contribution',0,'savings');
+}
+calculate();funding();
+</script>
+</body>
+</html>
