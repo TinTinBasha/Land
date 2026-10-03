@@ -4,38 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Home Building Expenses</title>
+<link rel="stylesheet" href="common.css">
 <style>
-:root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#667085;--line:#d9e1ea;--blue:#2563eb;--green:#067647;--red:#b42318}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px Segoe UI,Arial,sans-serif}.wrap{max-width:1300px;margin:0 auto;padding:28px 18px 60px}
-h1{margin:0 0 6px;font-size:30px}h2{margin:0 0 6px;font-size:21px}.sub,.note{color:var(--muted);line-height:1.5}.sub a{color:var(--blue)}
-.section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin:18px 0;box-shadow:0 6px 20px #1018280b}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
-label{display:block;font-weight:650;font-size:13px;margin-bottom:6px}input,select,textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;font:inherit}
-.summary{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:16px}.metric{background:#f8fafc;border:1px solid var(--line);border-radius:11px;padding:13px}.metric .l{font-size:12px;color:var(--muted)}.metric .v{font-size:19px;font-weight:750;margin-top:4px}
-.good{color:var(--green)!important}.bad{color:var(--red)!important}
-.toolbar{display:flex;gap:8px;margin:15px 0;flex-wrap:wrap;align-items:center}
-button{border:0;border-radius:8px;padding:10px 14px;font-weight:700;background:var(--blue);color:#fff;cursor:pointer}button.secondary{background:#eef2f6;color:#344054}button.danger{background:#fee4e2;color:var(--red);padding:6px 10px}button.small{padding:6px 10px;background:#eef2f6;color:#344054}
-.table{overflow:auto;border:1px solid var(--line);border-radius:11px}table{border-collapse:collapse;width:100%}th,td{padding:9px;border-bottom:1px solid #edf0f4;text-align:left;font-size:13px;white-space:nowrap}th{background:#f8fafc;color:#475467}td.num,th.num{text-align:right}.total td{font-weight:800;background:#f8fafc}
-td.wrapcell{white-space:normal;min-width:160px}.empty{padding:22px;text-align:center;color:var(--muted)}
+/* expenses-specific */
+th,td{text-align:left;font-size:13px}td.num,th.num{text-align:right}
+td.wrapcell{white-space:normal;min-width:160px}
 .bar{height:8px;background:#eef2f6;border-radius:5px;overflow:hidden;min-width:90px}.bar i{display:block;height:100%;background:var(--blue)}.bar i.over{background:var(--red)}
 .cols{display:grid;grid-template-columns:2fr 1fr;gap:18px}
 td input.bud{padding:6px;width:120px;text-align:right}
-html{-webkit-text-size-adjust:100%;overflow-y:scroll}.wrap>*,.grid>div,.cols>div,.metric{min-width:0}
-.nav{display:flex;gap:8px;margin:0 0 18px;flex-wrap:wrap}.nav a{flex:1 1 240px;text-align:center;padding:13px 16px;border-radius:10px;font-weight:700;text-decoration:none;background:#eef2f6;color:#344054;border:1px solid var(--line)}.nav a.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-.nav a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #93c5fd;outline-offset:1px}
 .charts{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}.chartbox{border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}.chartbox h3{margin:0 0 10px;font-size:15px}
 .chartbox svg{display:block;width:100%;height:auto;overflow:visible}.chartbox text{font:11px Segoe UI,Arial,sans-serif;fill:#667085}
 .donutwrap{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.donutwrap svg{flex:0 0 190px;width:190px;max-width:100%}.legend{flex:1 1 180px;list-style:none;margin:0;padding:0;font-size:13px}
 .legend li{display:flex;align-items:center;gap:8px;padding:3px 0}.legend i{width:11px;height:11px;border-radius:3px;flex:0 0 11px}.legend .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.legend .a{font-weight:700;white-space:nowrap}.legend .p{color:var(--muted);width:46px;text-align:right}
 .donutwrap text.big{font-size:15px;font-weight:700;fill:#172033}
-@media(max-width:1000px){.grid,.summary{grid-template-columns:repeat(2,1fr)}.cols,.charts{grid-template-columns:1fr}.wrap{padding:20px 14px 48px}}
+@media(max-width:1000px){.cols,.charts{grid-template-columns:1fr}}
 @media(max-width:700px){
  #list thead{display:none}#list,#list tbody,#list tr,#list td{display:block;width:100%}
  #list tr{border-bottom:1px solid var(--line);padding:10px 4px}#list td{border:0;padding:3px 6px;white-space:normal;display:flex;justify-content:space-between;gap:12px;text-align:right}
  #list td::before{content:attr(data-label);color:var(--muted);font-weight:600;text-align:left}#list td:empty{display:none}#list td.noprint{justify-content:flex-end}#list tr.total td::before{content:none}#list tr.total{background:#f8fafc}
- #list .table,.table:has(#list){border:0}}
-@media(max-width:600px){.grid,.summary{grid-template-columns:1fr}.section{padding:16px;border-radius:12px}h1{font-size:23px}h2{font-size:18px}input,select,textarea{font-size:16px;min-height:44px}button{min-height:44px}.toolbar>*{flex:1 1 140px;max-width:none!important}.metric .v{font-size:17px}}
-@media print{.noprint,.nav{display:none!important}body{background:#fff}.section{box-shadow:none;break-inside:avoid}.chartbox{break-inside:avoid}}
+ .table:has(#list){border:0}}
+@media print{.chartbox{break-inside:avoid}}
 </style>
 </head>
 <body>
